@@ -62,5 +62,5 @@ export default {
     commit(MutationTypes.SET_MOVIE, res);
 
     return res;
-  }
+  },
 };

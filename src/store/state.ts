@@ -9,6 +9,6 @@ export interface State {
 export const state: State = {
   movieResults: {},
   movie: {},
-}
+};
 
 export default state;

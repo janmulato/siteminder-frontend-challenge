@@ -5,8 +5,8 @@ export interface Movie {
   Type?: string;
   imdbID?: string;
   Response?: string;
-  Language: string;
-  Actors: string;
-  Runtime: string;
-  Plot: string;
+  Language?: string;
+  Actors?: string;
+  Runtime?: string;
+  Plot?: string;
 }

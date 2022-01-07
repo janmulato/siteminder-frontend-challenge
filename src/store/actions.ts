@@ -2,7 +2,6 @@ import { MutationTypes } from "./mutation";
 import { MovieResults } from "@/models/MovieResults";
 import movie from "@/api/movie";
 import { Movie } from "@/models/movie";
-import movie from "@/api/movie";
 
 export enum ActionTypes {
   SEARCH_MOVIE = "SEARCH_MOVIE",

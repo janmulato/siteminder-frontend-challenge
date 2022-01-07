@@ -8,24 +8,40 @@
         placeholder="Search here"
         :append-icon="search ? undefined : 'mdi-magnify'"
         v-model="search"
+        color="blue"
       ></v-text-field>
     </v-row>
-    <v-row>
-      <MovieCard></MovieCard>
+    <v-row v-if="!movies.length">
+      <v-col cols="12">
+        <h3 class="no-result">No Results Found</h3>
+      </v-col>
     </v-row>
-    <v-row>
-      <MovieCard></MovieCard>
+    <v-row v-else class="list">
+      <v-col cols="12" v-for="movie in movies" :key="movie.imdbID">
+        <MovieCard
+          :active="movie.imdbID === selectedMovieId"
+          @click.native="selectMovie(movie)"
+          :movie="movie"
+        ></MovieCard>
+      </v-col>
     </v-row>
-    <v-row>
-      <Pagination class="pagination"></Pagination>
+    <v-row v-if="movies.length">
+      <Pagination
+        :page.sync="page"
+        :totalPage="totalPage"
+        class="pagination"
+      ></Pagination>
     </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import MovieCard from "@/components/movie/MovieCard.vue"; // @ is an alias to /src
 import Pagination from "@/components/common/Pagination.vue"; // @ is an alias to /src
+import { ActionTypes } from "@/store/actions";
+import { Movie } from "@/models/movie";
+import { Debounce } from "vue-debounce-decorator";
 
 @Component({
   components: {
@@ -34,9 +50,57 @@ import Pagination from "@/components/common/Pagination.vue"; // @ is an alias to
   },
 })
 export default class MovieList extends Vue {
-  @Prop() private msg!: string;
-
   private search = "";
+  private page = 1;
+  private type = "movie";
+  private movie: Movie = {};
+
+  get movies(): Array<Movie> {
+    return this.$store.getters?.movieList;
+  }
+
+  get totalPage(): number {
+    return this.$store.state.movieResults?.totalPage || 0;
+  }
+
+  get selectedMovie(): Movie {
+    return this.$store.getters?.selectedMovie;
+  }
+
+  get selectedMovieId(): string {
+    return this.movie?.imdbID || "";
+  }
+
+  @Watch("search")
+  @Debounce(1000)
+  onSearchDebounce(): void {
+    this.page = 1;
+    this.searchMovie();
+  }
+
+  @Watch("page") onChangePage(): void {
+    this.searchMovie();
+  }
+
+  public searchMovie(): void {
+    this.$store.dispatch(ActionTypes.SEARCH_MOVIE, {
+      s: this.search,
+      page: this.page,
+      type: this.type,
+    });
+  }
+
+  public selectMovie(movie: Movie): void {
+    this.movie = movie;
+    this.$store.dispatch(ActionTypes.GET_MOVIE, {
+      i: movie.imdbID,
+      plot: "full",
+    });
+  }
+
+  mounted(): void {
+    this.searchMovie();
+  }
 }
 </script>
 
@@ -48,24 +112,31 @@ export default class MovieList extends Vue {
   position: relative;
   height: 100%;
 
+  .list {
+    margin: 12px -12px 60px;
+    overflow: auto;
+    max-height: 100vh;
+  }
+
   .pagination {
     bottom: 0;
-    min-height: 60px;
-    left: 0;
-    position: absolute;
     box-shadow: 2px 4px 12px 4px rgba(0, 0, 0, 0.05);
+    left: 0;
+    min-height: 60px;
+    position: absolute;
   }
-}
 
-.search {
-  border-bottom: 1px solid #004ec4;
-  padding: 40px 32px 32px;
+  .no-result {
+    color: #b5b5b5;
+    padding: 10px;
+  }
 
-  .search-bar {
-    border-radius: 8px;
-    & fieldset {
-      border: 2px solid #005fcc !important;
-      border-bottom-color: rgba(0, 0, 0, 0.38) !important;
+  .search {
+    border-bottom: 1px solid #004ec4;
+    padding: 40px 32px 32px;
+
+    .search-bar {
+      border-radius: 8px;
     }
   }
 }

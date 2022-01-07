@@ -7,16 +7,12 @@
   >
     <v-row class="pa-0">
       <v-col class="pa-0" cols="1">
-        <v-img
-          src="http://img.omdbapi.com/?i=tt3896198&h=600&apikey=21bc2559"
-          max-height="48px"
-          max-width="48px"
-        ></v-img>
+        <v-img :src="poster" max-height="48px" max-width="48px"></v-img>
       </v-col>
       <v-col class="movie-details">
         <div>
-          <h2 class="title">Movie Title</h2>
-          <p>(Year)</p>
+          <h2 class="title">{{ title }}</h2>
+          <p>({{ year }})</p>
         </div>
       </v-col>
     </v-row>
@@ -24,12 +20,25 @@
 </template>
 
 <script lang="ts">
+import { Movie } from "@/models/Movie";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class MovieCard extends Vue {
-  @Prop() private msg!: string;
   @Prop() private active!: boolean;
+  @Prop() private movie!: Movie;
+
+  get title(): string {
+    return this.movie?.Title || "";
+  }
+
+  get year(): string {
+    return this.movie?.Year || "";
+  }
+
+  get poster(): string {
+    return this.movie?.Poster || "";
+  }
 }
 </script>
 

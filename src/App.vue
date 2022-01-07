@@ -20,6 +20,6 @@
 }
 
 .v-text-field--outlined.v-input--is-focused fieldset {
-  border: 2px solid red;
+  border: 2px solid #0051ee !important;
 }
 </style>

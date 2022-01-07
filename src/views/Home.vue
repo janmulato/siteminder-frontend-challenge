@@ -2,10 +2,10 @@
   <div class="home">
     <v-container fluid>
       <v-row class="movies">
-        <v-col cols="3" pa-0>
+        <v-col cols="3" class="list">
           <MovieList></MovieList>
         </v-col>
-        <v-col cols="9" pa-0>
+        <v-col cols="9" class="details">
           <MovieDetails></MovieDetails>
         </v-col>
       </v-row>
@@ -29,10 +29,12 @@ export default class Home extends Vue {}
 <style lang="scss">
 .movies {
   height: 100vh;
+  .list {
+    z-index: 10;
+  }
 }
 
 .col {
-  // padding: 0 !important;
-  // padding-right: 12px;
+  padding: 0 !important;
 }
 </style>

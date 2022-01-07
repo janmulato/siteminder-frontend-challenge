@@ -16,16 +16,21 @@
     <v-row>
       <MovieCard></MovieCard>
     </v-row>
+    <v-row>
+      <Pagination class="pagination"></Pagination>
+    </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import MovieCard from "@/components/movie/MovieCard.vue"; // @ is an alias to /src
+import Pagination from "@/components/common/Pagination.vue"; // @ is an alias to /src
 
 @Component({
   components: {
     MovieCard,
+    Pagination,
   },
 })
 export default class MovieList extends Vue {
@@ -40,8 +45,16 @@ export default class MovieList extends Vue {
 .movie-list {
   background: #ffffff;
   box-shadow: 2px 4px 12px 4px rgba(0, 0, 0, 0.05);
-  padding: 0 15px 0 0;
+  position: relative;
   height: 100%;
+
+  .pagination {
+    bottom: 0;
+    min-height: 60px;
+    left: 0;
+    position: absolute;
+    box-shadow: 2px 4px 12px 4px rgba(0, 0, 0, 0.05);
+  }
 }
 
 .search {

@@ -6,10 +6,18 @@
     align="start"
   >
     <v-row class="pa-0">
-      <v-col class="pa-0" cols="2">Poster</v-col>
-      <v-col class="details pa-0">
-        <h2 class="title">Movie Title</h2>
-        <p>(Year)</p>
+      <v-col class="pa-0" cols="1">
+        <v-img
+          src="http://img.omdbapi.com/?i=tt3896198&h=600&apikey=21bc2559"
+          max-height="48px"
+          max-width="48px"
+        ></v-img>
+      </v-col>
+      <v-col class="movie-details">
+        <div>
+          <h2 class="title">Movie Title</h2>
+          <p>(Year)</p>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -31,7 +39,7 @@ export default class MovieCard extends Vue {
   cursor: pointer;
   .row {
     border-bottom: 1px solid #c4c4c4;
-    padding: 16px 0;
+    padding: 16px 0 16px 24px;
   }
 
   &.active,
@@ -44,10 +52,13 @@ export default class MovieCard extends Vue {
     );
   }
 
-  .details {
+  .movie-details {
     text-align: left;
+    div {
+      padding: 0 0 0 12px;
+    }
     .title {
-      padding: 0 0 8px;
+      padding: 0 0 8px 0;
     }
   }
 }
